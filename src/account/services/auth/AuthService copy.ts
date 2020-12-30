@@ -48,33 +48,17 @@ class GoogleAuthService implements IAuthService {
     
     public async auth(userClientToken: string): Promise<UserA | null>  {
 
-        return AuthBuilder.build()
-                            .withAuthCall(this.getGoogleResponse)
-                            .withExtractClientUId(this.extractClientUserId)
-                            .withUserInsertValues(this.getUserValues)
-                            .auth(userClientToken);
-        // const googleResponse = await this.getGoogleResponse(userClientToken);
-        // if (!googleResponse){
-        //     return null;
-        // }
-        // const returnedUser = await this.getGoogleUserId(googleResponse);
-        // if(!returnedUser){
-        //     return await this.createUser(googleResponse);
-        // }
-        // return returnedUser;
+        
+        const googleResponse = await this.getGoogleResponse(userClientToken);
+        if (!googleResponse){
+            return null;
+        }
+        const returnedUser = await this.getGoogleUserId(googleResponse);
+        if(!returnedUser){
+            return await this.createUser(googleResponse);
+        }
+        return returnedUser;
     }
-
-    private extractClientUserId(googleResponse: LoginTicket): string{
-        return googleResponse.getUserId()!;
-    }
-
-    private getUserValues(googleResponse: LoginTicket): string[] {
-        const clientUserId = googleResponse.getUserId()!;
-        const { given_name, email, family_name } = googleResponse.getPayload()!;   
-        const insertValues: string[] = [clientUserId, email!, given_name!, family_name!];
-        return insertValues;
-    }
-    
 
     private async getGoogleUserId(googleResponse: LoginTicket): Promise<UserA | null> {
         const client_user_id: string = googleResponse.getUserId()!;

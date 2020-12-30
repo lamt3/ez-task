@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  db: 
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pledge_db
+    volumes:
+      - $PWD/db_data/:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  app:
+    image: lamt3/pledge-app
+    depends_on: 
+      - db
+    ports:
+      - '5000:5000'
+

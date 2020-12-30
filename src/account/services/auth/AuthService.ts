@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { QueryResult } from 'pg';
 import axios from 'axios';
 
-import { UserA } from '../../entities/UserA';
+import { TaskPoster, UserA } from '../../entities/UserA';
 import { executeQuery } from '../../../daos/common/SQLPatterns';
 import logger from '@shared/Logger';
 
@@ -100,7 +100,7 @@ class FBAuthService implements IAuthService {
 
 class AuthBuilder {
 
-    public authorizeClientToken!: ((userClientToken: string) => Promise<any | null>);
+    public authorizeClientToken!: (userClientToken: string) => Promise<any | null>;
     public userClientIdExtractor!: (data: any) => string;
     public generateUserInsertValues!: (data: any) => string[];
 
@@ -174,7 +174,6 @@ class AuthBuilder {
         }
         const { oid, first_name, last_name, email } = result;
         const jwtToken = this.generateJWTToken(oid);
-        console.log(jwtToken);
         return new UserA(oid, first_name, last_name, email, jwtToken);
     }
 
