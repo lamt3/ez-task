@@ -10,7 +10,7 @@ const pool = new Pool({
   port: process.env.PG_PORT ? +process.env.PG_PORT : 5432
 });
 
-const executeQuery = async <T>(sqlStatement: string, stmtEnricher: string[], rowMapper: (result: QueryResult) => T) => {
+const executeQuery = async <T>(sqlStatement: string, stmtEnricher: any[], rowMapper: (result: QueryResult) => T) => {
 
   let res = null;
   let client = null;
@@ -99,3 +99,4 @@ class SQLState {
 
 
 }
+

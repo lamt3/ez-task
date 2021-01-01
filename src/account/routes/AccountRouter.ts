@@ -22,5 +22,9 @@ router.get('/auth/check', authJWT, async (req: Request, resp: Response) => {
     return resp.status(200).json({'jwtValid': true, userId: req.user})
 });
 
+router.post('/auth/dummy/user', authJWT, async (req: Request, resp: Response) => {
+    return resp.status(200).json({'jwtValid': true, userId: req.user})
+});
+
 
 export default router; 
