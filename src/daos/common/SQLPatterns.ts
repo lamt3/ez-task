@@ -10,14 +10,19 @@ const pool = new Pool({
   port: process.env.PG_PORT ? +process.env.PG_PORT : 5432
 });
 
-const executeQuery = async <T>(sqlStatement: string, stmtEnricher: any[], rowMapper: (result: QueryResult) => T) => {
+const executeQuery = async <T>(sqlStatement: string, stmtEnricher: any[] | null, rowMapper: (result: QueryResult) => T) => {
 
   let res = null;
   let client = null;
   try {
     logger.info('Running Query: %s', sqlStatement); 
     client = await pool.connect();
-    res = await client.query(sqlStatement, stmtEnricher);
+    if(stmtEnricher){
+      res = await client.query(sqlStatement, stmtEnricher);
+    }else{
+      res = await client.query(sqlStatement);
+    }
+    
   } catch (e) {
     logger.error('Error Executing Query: %s with Error: %s', sqlStatement, e);
   }

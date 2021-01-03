@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, Router } from 'express';
 
 import { selectAuthService } from '../services/auth/AuthService';
 import { authJWT } from '../../middlewares/index';
+import { createDummyUser } from '../services/account/AccountService';
 
 const router = Router();
 
@@ -23,7 +24,8 @@ router.get('/auth/check', authJWT, async (req: Request, resp: Response) => {
 });
 
 router.post('/auth/dummy/user', authJWT, async (req: Request, resp: Response) => {
-    return resp.status(200).json({'jwtValid': true, userId: req.user})
+    const newUser = await createDummyUser();
+    return resp.status(200).json({'jwtValid': true, newUser: newUser})
 });
 
 

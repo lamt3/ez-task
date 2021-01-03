@@ -32,3 +32,14 @@ export class TaskComment{
     createdDate: Date | undefined;
     replies: TaskComment[] | undefined; 
 }
+
+export class TaskFilter {
+    userLat: number | undefined;
+    userLong: number | undefined;
+    distanceSearch: number | undefined;
+    titleSearch: string | undefined;
+    descriptionSearch: string | undefined;
+    minPrice: number | undefined;
+    maxPrice: number | undefined;
+    taskType: string | undefined;
+}
